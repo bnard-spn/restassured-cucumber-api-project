@@ -1,4 +1,4 @@
-package com.deloitte.qa.poc.restassured.cucumber.properties;
+package com.deloitte.qa.restassured.cucumber.properties;
 
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.builder.fluent.Configurations;

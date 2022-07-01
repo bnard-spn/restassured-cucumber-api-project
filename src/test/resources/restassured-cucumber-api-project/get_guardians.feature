@@ -14,4 +14,4 @@ Feature: Get Guardians
   Scenario: Send request to retrieve a nonexistent Guardian
     Given the app wants the "nonexistent guardian"
     When the app sends the Get Guardians request
-    Then API Mock Service will return a "NOT FOUND" error
+    Then API Mock Service will return a "NOT_FOUND" error with "Guardian not found" message
