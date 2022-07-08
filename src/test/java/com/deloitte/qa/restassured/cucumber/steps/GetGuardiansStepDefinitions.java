@@ -3,7 +3,6 @@ package com.deloitte.qa.restassured.cucumber.steps;
 import com.deloitte.qa.commons.helpers.RequestApi;
 import com.deloitte.qa.restassured.cucumber.properties.TestProperties;
 import com.deloitte.qa.restassured.cucumber.types.Guardian;
-import com.deloitte.qa.restassured.cucumber.common.CommonSteps;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,6 +14,7 @@ import java.util.List;
 
 import static com.deloitte.qa.commons.helpers.Assertions.*;
 import static com.deloitte.qa.restassured.cucumber.common.CommonActions.validateGuardianData;
+import static com.deloitte.qa.restassured.cucumber.common.CommonSteps.responseMap;
 
 
 public class GetGuardiansStepDefinitions {
@@ -41,13 +41,13 @@ public class GetGuardiansStepDefinitions {
 
     @When("the app sends the Get Guardians request")
     public void sendGetGuardiansRequest() {
-        CommonSteps.responseMap = requestApi.sendGetRequest(requestUrl);
+        responseMap = requestApi.sendGetRequest(requestUrl);
     }
 
     @Then("API Mock Service will return the list of guardian characters")
     public void validateGuardianList() throws JsonProcessingException {
-        validateStatusCode("SUCCESSFUL", CommonSteps.responseMap.get("statusCode"));
-        List<Guardian>guardians = new ObjectMapper().readValue(CommonSteps.responseMap.get("response"), new TypeReference<List<Guardian>>() {});
+        validateStatusCode("SUCCESSFUL", responseMap.get("statusCode"));
+        List<Guardian>guardians = new ObjectMapper().readValue(responseMap.get("response"), new TypeReference<List<Guardian>>() {});
         for (Guardian guardian: guardians) {
             validateGuardianData(guardian);
         }
@@ -55,9 +55,9 @@ public class GetGuardiansStepDefinitions {
 
     @Then("API Mock Service will return the guardian data")
     public void validateGuardian() throws JsonProcessingException {
-        validateStatusCode("SUCCESSFUL", CommonSteps.responseMap.get("statusCode"));
+        validateStatusCode("SUCCESSFUL", responseMap.get("statusCode"));
 
-        Guardian guardian = new ObjectMapper().readValue(CommonSteps.responseMap.get("response"), Guardian.class);
+        Guardian guardian = new ObjectMapper().readValue(responseMap.get("response"), Guardian.class);
         validateGuardianData(guardian);
     }
 }

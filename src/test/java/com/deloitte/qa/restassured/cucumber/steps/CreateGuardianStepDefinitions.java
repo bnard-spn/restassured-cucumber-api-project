@@ -27,12 +27,12 @@ public class CreateGuardianStepDefinitions {
     private final RequestApi requestApi = new RequestApi();
     private String requestUrl;
     private Map<String, Object> requestMap = new HashMap<>();
-    private TestProperties testProperties = new TestProperties();
-    private TestData testData = new TestData();
+    private final TestProperties testProperties = new TestProperties();
+    private final TestData testData = new TestData();
     private Guardian guardian;
 
     @Given("the app wants to {string}")
-    public void initializeCreateGuardianRequest(String request) {
+    public void initializeCreateGuardianRequest(String request) throws JsonProcessingException {
         requestUrl = testProperties.getTestProperty("endpoint");
         switch (request) {
             case "create a new guardian":
@@ -44,37 +44,60 @@ public class CreateGuardianStepDefinitions {
 
     @And("the {string} field {string} for the create request")
     public void modifyCreateGuardianRequest(String field, String errorScenario) {
-        Map<String, String> modifiedRequestMap = (Map<String, String>) requestMap.get("requestMap");
+        Map<String, Object> modifiedRequestMap = (Map<String, Object>) requestMap.get("requestMap");
+        List<Map<String, String>> modifiedRequestHeaderList = (List<Map<String, String>>) requestMap.get("requestHeaders");
         switch (field + " - " + errorScenario) {
             case "first name - is missing":
                 modifiedRequestMap.remove("firstName");
-                requestMap.put("requestMap", modifiedRequestMap);
                 break;
             case "first name - has over max length characters":
                 modifiedRequestMap.put("firstName", testData.getRandomAlphabeticString(51));
-                requestMap.put("requestMap", modifiedRequestMap);
+                break;
+            case "first name - is a number":
+                modifiedRequestMap.put("firstName", testData.getRandomNumber(100,999));
+                break;
+            case "first name - has special characters":
+                modifiedRequestMap.put("firstName", testData.generateSpecialCharacterString(10));
                 break;
             case "last name - is missing":
                 modifiedRequestMap.remove("lastName");
-                requestMap.put("requestMap", modifiedRequestMap);
                 break;
             case "last name - has over max length characters":
                 modifiedRequestMap.put("lastName", testData.getRandomAlphabeticString(51));
-                requestMap.put("requestMap", modifiedRequestMap);
+                break;
+            case "last name - is a number":
+                modifiedRequestMap.put("lastName", testData.getRandomNumber(100,999));
+                break;
+            case "last name - has special characters":
+                modifiedRequestMap.put("lastName", testData.generateSpecialCharacterString(10));
                 break;
             case "keyblade - is missing":
                 modifiedRequestMap.remove("keyblade");
-                requestMap.put("requestMap", modifiedRequestMap);
                 break;
             case "keyblade - has over max length characters":
                 modifiedRequestMap.put("keyblade", testData.getRandomAlphabeticString(51));
-                requestMap.put("requestMap", modifiedRequestMap);
+                break;
+            case "keyblade - is a number":
+                modifiedRequestMap.put("keyblade", testData.getRandomNumber(100,999));
+                break;
+            case "keyblade - has special characters":
+                modifiedRequestMap.put("keyblade", testData.generateSpecialCharacterString(10));
                 break;
             case "invalid - in request body":
                 modifiedRequestMap.put(testData.getRandomAlphabeticString(5), testData.getRandomAlphabeticString(5));
-                requestMap.put("requestMap", modifiedRequestMap);
+                break;
+            case "authorizationHeader - is missing":
+                modifiedRequestHeaderList.remove(1);
+                break;
+            case "authorizationHeader - is expired":
+                Map<String, String> headerMap = new HashMap<>();
+                headerMap.put("header", "Authorization");
+                headerMap.put("value", "Bearer " + testProperties.getInvalidTestProperty("expiredToken"));
+                modifiedRequestHeaderList.set(1, headerMap);
                 break;
         }
+        requestMap.put("requestMap", modifiedRequestMap);
+        requestMap.put("requestHeaders", modifiedRequestHeaderList);
     }
 
     @When("the app sends the Create Guardian request")

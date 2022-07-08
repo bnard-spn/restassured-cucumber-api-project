@@ -32,6 +32,10 @@ public class TestProperties {
         return testConfiguration.getString(key);
     }
 
+    public String getInvalidTestProperty(String key) {
+        return invalidTestConfiguration.getString(key);
+    }
+
     public String getRandomTestProperty(String key) {
         return getRandomFromList(testConfiguration.getList(key));
     }

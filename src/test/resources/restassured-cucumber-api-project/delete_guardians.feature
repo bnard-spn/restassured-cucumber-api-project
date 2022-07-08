@@ -11,3 +11,15 @@ Feature: Delete Guardians
     Given the app deletes "a nonexistent guardian"
     When the app sends the Delete Guardian request
     Then API Mock Service will return a "NOT_FOUND" error with "Guardian not found" message
+
+  Scenario Outline: Delete Guardian with invalid authorization
+    Given the app deletes "a newly created guardian"
+    And the "<field>" field "<errorScenario>" for the delete request
+    When the app sends the Delete Guardian request
+    Then API Mock Service will return a "<status>" error with "<errorMessage>" message
+
+    Examples:
+      |field              |errorScenario    |status           |errorMessage               |
+      |authorizationHeader|is missing       |UNAUTHORIZED     |User is unauthorized.      |
+      |authorizationHeader|is expired       |UNAUTHORIZED     |Token unverified.          |
+      |authorizationHeader|is incorrect role|ACCESS_FORBIDDEN |User role is unauthorized. |
