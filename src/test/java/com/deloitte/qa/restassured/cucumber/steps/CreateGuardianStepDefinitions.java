@@ -54,7 +54,7 @@ public class CreateGuardianStepDefinitions {
                 modifiedRequestMap.put("firstName", testData.getRandomAlphabeticString(51));
                 break;
             case "first name - is a number":
-                modifiedRequestMap.put("firstName", testData.getRandomNumber(100,999));
+                modifiedRequestMap.put("firstName", testData.getRandomNumber(3));
                 break;
             case "first name - has special characters":
                 modifiedRequestMap.put("firstName", testData.generateSpecialCharacterString(10));
@@ -66,7 +66,7 @@ public class CreateGuardianStepDefinitions {
                 modifiedRequestMap.put("lastName", testData.getRandomAlphabeticString(51));
                 break;
             case "last name - is a number":
-                modifiedRequestMap.put("lastName", testData.getRandomNumber(100,999));
+                modifiedRequestMap.put("lastName", testData.getRandomNumber(3));
                 break;
             case "last name - has special characters":
                 modifiedRequestMap.put("lastName", testData.generateSpecialCharacterString(10));
@@ -78,7 +78,7 @@ public class CreateGuardianStepDefinitions {
                 modifiedRequestMap.put("keyblade", testData.getRandomAlphabeticString(51));
                 break;
             case "keyblade - is a number":
-                modifiedRequestMap.put("keyblade", testData.getRandomNumber(100,999));
+                modifiedRequestMap.put("keyblade", testData.getRandomNumber(3));
                 break;
             case "keyblade - has special characters":
                 modifiedRequestMap.put("keyblade", testData.generateSpecialCharacterString(10));
